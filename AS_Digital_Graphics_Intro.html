@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07110b" />
+  <title>AS Digital Graphics — Intro</title>
+  <style>
+    :root {
+      --bg: #050806;
+      --green: #19d66b;
+      --green-soft: #8bffb8;
+      --muted: #789184;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Inter, system-ui, Arial, sans-serif; }
+    body {
+      background: radial-gradient(ellipse at 50% 42%, #10251a 0%, #07110b 43%, #020403 100%);
+      color: #f4fff7;
+      overflow: hidden;
+    }
+    .intro {
+      position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(21, 190, 91, .14), transparent 34%),
+        linear-gradient(145deg, #030604, #09160e 52%, #020403);
+      transition: opacity .8s ease, visibility .8s ease;
+    }
+    .intro::before, .intro::after {
+      content: ""; position: absolute; width: min(72vw, 620px); aspect-ratio: 1;
+      border: 1px solid rgba(36, 225, 116, .10); border-radius: 50%;
+      box-shadow: 0 0 70px rgba(18, 210, 100, .05), inset 0 0 70px rgba(18, 210, 100, .035);
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .intro::after { width: min(55vw, 470px); animation-delay: -2s; }
+    .content { position: relative; z-index: 1; width: min(88vw, 520px); text-align: center; }
+    .monogram {
+      width: 86px; height: 86px; margin: 0 auto 27px; display: grid; place-items: center;
+      border: 1px solid rgba(89, 255, 157, .55); border-radius: 24px;
+      background: linear-gradient(145deg, rgba(25,214,107,.17), rgba(0,0,0,.45));
+      color: var(--green-soft); font-size: 31px; font-weight: 900; letter-spacing: -4px;
+      text-shadow: 0 0 24px rgba(25,214,107,.6);
+      box-shadow: 0 0 36px rgba(25,214,107,.16), inset 0 0 22px rgba(25,214,107,.08);
+      animation: float 3s ease-in-out infinite;
+    }
+    .brand {
+      margin: 0; font-size: clamp(27px, 6vw, 43px); line-height: 1.1;
+      font-weight: 850; letter-spacing: .075em; text-transform: uppercase;
+    }
+    .brand span { color: var(--green); text-shadow: 0 0 25px rgba(25,214,107,.36); }
+    .tagline {
+      margin: 13px 0 39px; color: #a4b9aa; font-size: 10px;
+      letter-spacing: .32em; text-transform: uppercase;
+    }
+    .loader-wrap { width: min(100%, 330px); margin: 0 auto; }
+    .loader-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; }
+    .loading-label { color: #9db5a4; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; }
+    .percent { color: var(--green-soft); font-size: 13px; font-weight: 750; font-variant-numeric: tabular-nums; }
+    .track { height: 3px; width: 100%; overflow: hidden; border-radius: 20px; background: #1b3023; }
+    .progress {
+      width: 0%; height: 100%; border-radius: inherit;
+      background: linear-gradient(90deg, #0c9d4a, #72ffab);
+      box-shadow: 0 0 15px rgba(25,214,107,.85);
+      transition: width .12s linear;
+    }
+    .bottom-note {
+      margin-top: 25px; color: #52695a; font-size: 9px;
+      letter-spacing: .2em; text-transform: uppercase;
+    }
+    .intro.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    .home {
+      min-height: 100vh; display: grid; place-items: center; padding: 30px;
+      text-align: center;
+    }
+    .home-inner { max-width: 650px; }
+    .home h1 { font-size: clamp(34px, 7vw, 65px); margin: 0 0 12px; }
+    .home h1 span { color: var(--green); }
+    .home p { color: #a4b9aa; letter-spacing: .04em; }
+    @keyframes breathe { 0%,100% { transform: scale(.96); opacity: .55; } 50% { transform: scale(1.04); opacity: 1; } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <section class="intro" id="intro" aria-label="Website loading intro">
+    <div class="content">
+      <div class="monogram" aria-hidden="true">AS</div>
+      <h1 class="brand">AS <span>Digital</span><br>Graphics</h1>
+      <p class="tagline">Design · Creativity · Innovation</p>
+      <div class="loader-wrap">
+        <div class="loader-meta">
+          <span class="loading-label" id="status">Initializing experience</span>
+          <span class="percent" id="percent">0%</span>
+        </div>
+        <div class="track"><div class="progress" id="progress"></div></div>
+      </div>
+      <div class="bottom-note">A creative world is loading</div>
+    </div>
+  </section>
+
+  <!-- Demo landing screen: replace this section with your website's existing homepage. -->
+  <main class="home">
+    <div class="home-inner">
+      <h1>Welcome to <span>AS Digital Graphics</span></h1>
+      <p>Your creative space starts here.</p>
+    </div>
+  </main>
+
+  <script>
+    // Demo loader. For a real site, you can connect this to actual page/assets loading.
+    const intro = document.getElementById('intro');
+    const progress = document.getElementById('progress');
+    const percent = document.getElementById('percent');
+    const status = document.getElementById('status');
+    let value = 0;
+
+    const messages = [
+      [0, 'Initializing experience'],
+      [28, 'Preparing creative studio'],
+      [62, 'Loading visual elements'],
+      [88, 'Almost ready'],
+      [100, 'Welcome']
+    ];
+
+    const timer = setInterval(() => {
+      // Smooth, staged progress for a polished intro effect.
+      value = Math.min(100, value + (value < 65 ? 2 : value < 90 ? 1 : 2));
+      progress.style.width = value + '%';
+      percent.textContent = value + '%';
+
+      const current = [...messages].reverse().find(([threshold]) => value >= threshold);
+      if (current) status.textContent = current[1];
+
+      if (value >= 100) {
+        clearInterval(timer);
+        setTimeout(() => intro.classList.add('hide'), 450);
+        setTimeout(() => { document.body.style.overflow = 'auto'; }, 1250);
+      }
+    }, 38);
+  </script>
+</body>
+</html>
