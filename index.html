@@ -517,6 +517,16 @@
 @media(max-width:580px){.about-portal-grid{grid-template-columns:1fr}.about-portal-card{min-height:220px}}
 </style>
 
+
+<style id="asdg-early-entry-style">
+  .asdg-enter-early{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;padding:13px 22px;border:1px solid rgba(134,239,172,.55);border-radius:999px;background:linear-gradient(110deg,rgba(20,83,45,.92),rgba(5,46,22,.92));color:#eaffef;font:800 12px/1.2 Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.3),0 0 24px rgba(34,197,94,.12);cursor:pointer;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+  .asdg-enter-early:hover{transform:translateY(-2px);border-color:#86efac;box-shadow:0 14px 36px rgba(0,0,0,.38),0 0 28px rgba(34,197,94,.22)}
+  .asdg-enter-early:focus-visible{outline:3px solid #86efac;outline-offset:4px}
+  .asdg-enter-early i{font-size:13px;color:#86efac}
+  .asdg-enter-hint{margin-top:9px;color:#8fae99;font:600 9px/1.5 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+  @media(max-width:480px){.asdg-enter-early{padding:12px 18px;font-size:10px}}
+</style>
+
 </head>
 <body class="overflow-x-hidden antialiased">
 <section class="asdg-intro asdg-blueprint-intro" id="asdgIntro" aria-label="AS Digital Graphics logo construction intro">
@@ -550,6 +560,11 @@
       <div class="asdg-build-stages"><span>GRID</span><span>MONOGRAM</span><span>IDENTITY</span><span>READY</span></div>
     </div>
     <div class="asdg-bottom-note">A creative identity, built with precision</div>
+    <button class="asdg-enter-early" id="asdgEnterEarly" type="button">
+      <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i>
+      <span>Enter Editnex Now</span>
+    </button>
+    <div class="asdg-enter-hint">Skip the intro animation · Enter before 100%</div>
   </div>
 </section>
 
@@ -922,12 +937,12 @@
             <span class="portal-card-action">View founders <i class="fas fa-arrow-right"></i></span>
             <span class="portal-card-watermark"><i class="fas fa-user-group"></i></span>
           </a>
-          <a id="about-portals" class="about-portal-card" href="#about">
+          <a id="about-portals" class="about-portal-card" href="about-us.html">
             <span class="about-portal-icon"><i class="fas fa-building"></i></span>
             <span class="about-portal-tag">OUR STORY</span>
-            <h3>About Editnex</h3>
-            <p>Discover the studio’s creative direction, services, approach to design and commitment to thoughtful digital work.</p>
-            <span class="about-portal-action">Explore our story <i class="fas fa-arrow-right ml-1"></i></span>
+            <h3>About Us</h3>
+            <p>Meet the Editnex team, explore our working process, values, roles and the story behind the studio.</p>
+            <span class="about-portal-action">Open About Us <i class="fas fa-arrow-right ml-1"></i></span>
             <i class="about-portal-watermark fas fa-compass"></i>
           </a>
           <a class="about-portal-card" href="vidyanirman-portfolio.html">
@@ -1972,19 +1987,31 @@
   const percent=document.getElementById('asdgPercent');
   const status=document.getElementById('asdgStatus');
   const logo=document.getElementById('asdgBuildLogo');
+  const enterEarly=document.getElementById('asdgEnterEarly');
   const paths=[...logo.querySelectorAll('.asdg-logo-frame,.asdg-logo-a,.asdg-logo-s,.asdg-logo-baseline')];
   const nodes=[...logo.querySelectorAll('.asdg-logo-node')];
   paths.forEach(path=>{const length=path.getTotalLength();path.style.strokeDasharray=length;path.style.strokeDashoffset=length;path.dataset.length=length;});
   document.body.classList.add('asdg-intro-lock');
+  let exited=false,removeTimer;
+  const exitIntro=()=>{
+    if(exited)return;
+    exited=true;
+    clearTimeout(removeTimer);
+    intro.classList.add('hide');
+    document.body.classList.remove('asdg-intro-lock');
+    document.body.style.overflow='';
+    setTimeout(()=>{if(intro.isConnected)intro.remove();},950);
+  };
+  enterEarly?.addEventListener('click',exitIntro);
   const messages=[[0,'Mapping precision grid'],[14,'Constructing outer geometry'],[32,'Drawing AS monogram'],[57,'Refining vector strokes'],[76,'Building dimensional depth'],[91,'Finalizing brand identity'],[100,'AS DIGITAL GRAPHICS / READY']];
   const stages=[...document.querySelectorAll('.asdg-build-stages span')];
   const start=performance.now(),duration=5600;
   const frame=now=>{
+    if(exited||!intro.isConnected)return;
     const value=Math.min(100,Math.round(((now-start)/duration)*100));
     bar.style.width=value+'%';percent.textContent=value+'%';
     const current=[...messages].reverse().find(([threshold])=>value>=threshold);
     if(current)status.textContent=current[1];
-    // The logo itself is progressively drawn by the same loading percentage.
     const frameProgress=Math.min(1,value/18),aProgress=Math.max(0,Math.min(1,(value-12)/38)),sProgress=Math.max(0,Math.min(1,(value-35)/39)),baseProgress=Math.max(0,Math.min(1,(value-72)/20));
     const progress=[frameProgress,aProgress,sProgress,baseProgress];
     paths.forEach((path,i)=>{const length=Number(path.dataset.length);path.style.strokeDashoffset=length*(1-progress[i]);});
@@ -1992,7 +2019,7 @@
     stages.forEach((stage,i)=>stage.classList.toggle('active',value>=[0,30,65,100][i]));
     if(value<100){requestAnimationFrame(frame);return;}
     intro.classList.add('build-complete');
-    setTimeout(()=>{intro.classList.add('hide');document.body.classList.remove('asdg-intro-lock');setTimeout(()=>intro.remove(),950);},950);
+    removeTimer=setTimeout(exitIntro,950);
   };
   requestAnimationFrame(frame);
 })();
