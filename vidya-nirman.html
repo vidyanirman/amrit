@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07130d">
+  <title>Vidya Nirman | Digital Gurukul</title>
+  <style>
+    :root {
+      --bg: #050a07;
+      --panel: #0b1710;
+      --green: #18c76e;
+      --green2: #0b8f4b;
+      --text: #f2fff7;
+      --muted: #a8b9ae;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--text);
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(24,199,110,.18), transparent 38%),
+        radial-gradient(ellipse at 90% 85%, rgba(11,143,75,.14), transparent 35%),
+        var(--bg);
+    }
+    .wrap { width: min(1100px, 92%); margin: auto; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:24px 0; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.5px; }
+    .logo {
+      width:42px; height:42px; display:grid; place-items:center; border-radius:13px;
+      color:#031109; font-weight:900; background:linear-gradient(135deg,#4af59a,var(--green2));
+      box-shadow:0 0 25px rgba(24,199,110,.25);
+    }
+    .tag { color:var(--muted); font-size:13px; border:1px solid #244333; padding:8px 12px; border-radius:99px; }
+    main { padding:65px 0 55px; text-align:center; }
+    .eyebrow { color:#54e99b; text-transform:uppercase; letter-spacing:3px; font-size:12px; font-weight:700; }
+    h1 { font-size:clamp(38px,7vw,76px); line-height:1.04; margin:18px auto; max-width:850px; }
+    h1 span { color:var(--green); }
+    .intro { max-width:650px; margin:0 auto; color:var(--muted); font-size:17px; line-height:1.7; }
+    .open-btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px; margin-top:32px;
+      padding:16px 27px; border-radius:12px; background:linear-gradient(135deg,#35e889,#0c9c53);
+      color:#031109; font-weight:800; text-decoration:none; box-shadow:0 10px 35px rgba(24,199,110,.22);
+      transition:transform .2s, box-shadow .2s;
+    }
+    .open-btn:hover { transform:translateY(-3px); box-shadow:0 14px 42px rgba(24,199,110,.32); }
+    .section-title { text-align:center; margin:30px 0 22px; font-size:25px; }
+    .section-title span { color:var(--green); }
+    .team { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; max-width:760px; margin:0 auto 65px; }
+    .member {
+      background:linear-gradient(145deg,rgba(16,38,25,.96),rgba(7,16,11,.96));
+      border:1px solid #1d5737; border-radius:20px; padding:28px 20px;
+      box-shadow:0 15px 45px rgba(0,0,0,.22);
+    }
+    .avatar {
+      width:68px; height:68px; margin:0 auto 16px; display:grid; place-items:center;
+      border-radius:20px; background:#123d27; color:#5cf0a0; font-size:25px; font-weight:800;
+      border:1px solid #2b8652;
+    }
+    .role { color:#55e99a; font-size:11px; letter-spacing:2px; font-weight:800; text-transform:uppercase; }
+    .member h3 { margin:9px 0 0; font-size:21px; }
+    footer { border-top:1px solid #183323; color:#80978a; text-align:center; padding:22px 0 30px; font-size:13px; }
+    @media(max-width:600px) {
+      header { padding:18px 0; } .tag { display:none; } main { padding:55px 0 42px; }
+      .team { grid-template-columns:1fr; max-width:390px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><div class="logo">VN</div><div>VIDYA NIRMAN</div></div>
+      <div class="tag">Learn • Create • Grow</div>
+    </header>
+
+    <main>
+      <div class="eyebrow">Welcome to the Digital Gurukul</div>
+      <h1>Build your future with <span>Vidya Nirman.</span></h1>
+      <p class="intro">A learning space designed to help students explore knowledge, develop skills and create with confidence.</p>
+      <a class="open-btn" href="https://vidyanirman.online" target="_blank" rel="noopener noreferrer">
+        Open Vidya Nirman <span aria-hidden="true">↗</span>
+      </a>
+    </main>
+
+    <section aria-labelledby="team-heading">
+      <h2 class="section-title" id="team-heading">Meet the <span>Leadership</span></h2>
+      <div class="team">
+        <article class="member">
+          <div class="avatar" aria-hidden="true">AT</div>
+          <div class="role">Founder</div>
+          <h3>Anmol Tiwari</h3>
+        </article>
+        <article class="member">
+          <div class="avatar" aria-hidden="true">AS</div>
+          <div class="role">Co-founder</div>
+          <h3>Amrit Singh</h3>
+        </article>
+      </div>
+    </section>
+
+    <footer>© 2026 Vidya Nirman. Learn • Create • Grow.</footer>
+  </div>
+</body>
+</html>
